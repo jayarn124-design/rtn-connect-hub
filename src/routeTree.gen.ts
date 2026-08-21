@@ -11,6 +11,10 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetRouteImport } from './routes/fleet'
+import { Route as MarketplaceRouteImport } from './routes/marketplace'
+import { Route as PredictionsRouteImport } from './routes/predictions'
+import { Route as TwinRouteImport } from './routes/twin'
+import { Route as UlipRouteImport } from './routes/ulip'
 import { Route as FleetVehicleIdRouteImport } from './routes/fleet.$vehicleId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,6 +27,26 @@ const FleetRoute = FleetRouteImport.update({
   path: '/fleet',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MarketplaceRoute = MarketplaceRouteImport.update({
+  id: '/marketplace',
+  path: '/marketplace',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PredictionsRoute = PredictionsRouteImport.update({
+  id: '/predictions',
+  path: '/predictions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TwinRoute = TwinRouteImport.update({
+  id: '/twin',
+  path: '/twin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UlipRoute = UlipRouteImport.update({
+  id: '/ulip',
+  path: '/ulip',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FleetVehicleIdRoute = FleetVehicleIdRouteImport.update({
   id: '/$vehicleId',
   path: '/$vehicleId',
@@ -32,30 +56,68 @@ const FleetVehicleIdRoute = FleetVehicleIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
+  '/marketplace': typeof MarketplaceRoute
+  '/predictions': typeof PredictionsRoute
+  '/twin': typeof TwinRoute
+  '/ulip': typeof UlipRoute
   '/fleet/$vehicleId': typeof FleetVehicleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
+  '/marketplace': typeof MarketplaceRoute
+  '/predictions': typeof PredictionsRoute
+  '/twin': typeof TwinRoute
+  '/ulip': typeof UlipRoute
   '/fleet/$vehicleId': typeof FleetVehicleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
+  '/marketplace': typeof MarketplaceRoute
+  '/predictions': typeof PredictionsRoute
+  '/twin': typeof TwinRoute
+  '/ulip': typeof UlipRoute
   '/fleet/$vehicleId': typeof FleetVehicleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fleet' | '/fleet/$vehicleId'
+  fullPaths:
+    | '/'
+    | '/fleet'
+    | '/marketplace'
+    | '/predictions'
+    | '/twin'
+    | '/ulip'
+    | '/fleet/$vehicleId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fleet' | '/fleet/$vehicleId'
-  id: '__root__' | '/' | '/fleet' | '/fleet/$vehicleId'
+  to:
+    | '/'
+    | '/fleet'
+    | '/marketplace'
+    | '/predictions'
+    | '/twin'
+    | '/ulip'
+    | '/fleet/$vehicleId'
+  id:
+    | '__root__'
+    | '/'
+    | '/fleet'
+    | '/marketplace'
+    | '/predictions'
+    | '/twin'
+    | '/ulip'
+    | '/fleet/$vehicleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FleetRoute: typeof FleetRouteWithChildren
+  MarketplaceRoute: typeof MarketplaceRoute
+  PredictionsRoute: typeof PredictionsRoute
+  TwinRoute: typeof TwinRoute
+  UlipRoute: typeof UlipRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -72,6 +134,34 @@ declare module '@tanstack/react-router' {
       path: '/fleet'
       fullPath: '/fleet'
       preLoaderRoute: typeof FleetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/marketplace': {
+      id: '/marketplace'
+      path: '/marketplace'
+      fullPath: '/marketplace'
+      preLoaderRoute: typeof MarketplaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/predictions': {
+      id: '/predictions'
+      path: '/predictions'
+      fullPath: '/predictions'
+      preLoaderRoute: typeof PredictionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/twin': {
+      id: '/twin'
+      path: '/twin'
+      fullPath: '/twin'
+      preLoaderRoute: typeof TwinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ulip': {
+      id: '/ulip'
+      path: '/ulip'
+      fullPath: '/ulip'
+      preLoaderRoute: typeof UlipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fleet/$vehicleId': {
@@ -97,6 +187,10 @@ const FleetRouteWithChildren = FleetRoute._addFileChildren(FleetRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FleetRoute: FleetRouteWithChildren,
+  MarketplaceRoute: MarketplaceRoute,
+  PredictionsRoute: PredictionsRoute,
+  TwinRoute: TwinRoute,
+  UlipRoute: UlipRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
