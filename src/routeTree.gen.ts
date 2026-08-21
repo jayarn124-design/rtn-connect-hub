@@ -10,33 +10,52 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as FleetRouteImport } from './routes/fleet'
+import { Route as FleetVehicleIdRouteImport } from './routes/fleet.$vehicleId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FleetRoute = FleetRouteImport.update({
+  id: '/fleet',
+  path: '/fleet',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FleetVehicleIdRoute = FleetVehicleIdRouteImport.update({
+  id: '/$vehicleId',
+  path: '/$vehicleId',
+  getParentRoute: () => FleetRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/fleet': typeof FleetRouteWithChildren
+  '/fleet/$vehicleId': typeof FleetVehicleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/fleet': typeof FleetRouteWithChildren
+  '/fleet/$vehicleId': typeof FleetVehicleIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/fleet': typeof FleetRouteWithChildren
+  '/fleet/$vehicleId': typeof FleetVehicleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/fleet' | '/fleet/$vehicleId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/fleet' | '/fleet/$vehicleId'
+  id: '__root__' | '/' | '/fleet' | '/fleet/$vehicleId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FleetRoute: typeof FleetRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +67,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fleet': {
+      id: '/fleet'
+      path: '/fleet'
+      fullPath: '/fleet'
+      preLoaderRoute: typeof FleetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fleet/$vehicleId': {
+      id: '/fleet/$vehicleId'
+      path: '/$vehicleId'
+      fullPath: '/fleet/$vehicleId'
+      preLoaderRoute: typeof FleetVehicleIdRouteImport
+      parentRoute: typeof FleetRoute
+    }
   }
 }
 
+interface FleetRouteChildren {
+  FleetVehicleIdRoute: typeof FleetVehicleIdRoute
+}
+
+const FleetRouteChildren: FleetRouteChildren = {
+  FleetVehicleIdRoute: FleetVehicleIdRoute,
+}
+
+const FleetRouteWithChildren = FleetRoute._addFileChildren(FleetRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FleetRoute: FleetRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
